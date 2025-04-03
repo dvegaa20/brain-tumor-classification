@@ -36,9 +36,9 @@ def load_and_preprocess_images(data_path):
     class_counts = {
         cls: len(os.listdir(os.path.join(data_path, cls))) for cls in class_names
     }
-    print(f"Distribución de imágenes en {data_path}: {class_counts}")
+    print(f"\nImage distribution in  {data_path}: {class_counts}")
 
-    # Cargar y preprocesar las imágenes
+    # Load and preprocess images
     for label, cls in enumerate(class_names):
         class_path = os.path.join(data_path, cls)
         for file_name in os.listdir(class_path):
@@ -49,33 +49,33 @@ def load_and_preprocess_images(data_path):
                 images.append(img)
                 labels.append(label)
 
-    # Convertir a arrays de NumPy
+    # Convert to NumPy arrays
     images = np.array(images)
     labels = np.array(labels)
 
-    # Normalizar las imágenes
+    # Normalize the images
     images = images / 255.0
 
-    # Randomizar el orden de las imágenes y etiquetas
+    # Shuffle the order of images and labels
     images, labels = shuffle(images, labels, random_state=42)
     return images, labels, class_names
 
 
-# Cargar datasets de entrenamiento y prueba
-train_data_path = "data/raw/training"
-test_data_path = "data/raw/testing"
+# Paths
+train_dir = "data/raw/training"
+test_dir = "data/raw/testing"
 
-train_images, train_labels, class_names = load_and_preprocess_images(train_data_path)
-test_images, test_labels, _ = load_and_preprocess_images(test_data_path)
+train_images, train_labels, class_names = load_and_preprocess_images(train_dir)
+test_images, test_labels, _ = load_and_preprocess_images(test_dir)
 
-# Primera imagen (entrenamiento)
+# First image (training set)
 plt.figure()
 plt.imshow(train_images[0], cmap=plt.cm.binary)
 plt.colorbar()
 plt.grid(False)
 plt.show()
 
-# Grid de imágenes (entrenamiento)
+# Grid of images (training set)
 plt.figure(figsize=(10, 10))
 for i in range(25):
     plt.subplot(5, 5, i + 1)
