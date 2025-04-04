@@ -80,20 +80,3 @@ python -c "import tensorflow as tf; print(tf.__version__)"
 
 * 1.0.0
     * Primera versión estable con preprocesamiento, aumento de datos y entrenamiento de modelo.
-
-## Meta
-
-Diego Vega – [@your_twitter](https://twitter.com/your_twitter) – your_email@example.com
-
-Distribuido bajo la licencia MIT. Ver ``LICENSE`` para más información.
-
-[https://github.com/diegovega/image-classification-project](https://github.com/diegovega/image-classification-project)
-
-## Contribuciones
-
-1. Haz un fork (<https://github.com/diegovega/image-classification-project/fork>)
-2. Crea una rama para tu feature (`git checkout -b feature/nueva_funcionalidad`)
-3. Realiza los cambios y haz commit (`git commit -am 'Agregada nueva funcionalidad'`)
-4. Haz push a la rama (`git push origin feature/nueva_funcionalidad`)
-5. Crea un nuevo Pull Request
-
