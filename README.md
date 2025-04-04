@@ -14,13 +14,6 @@ Este proyecto implementa una pipeline completa de clasificación de imágenes, q
 ![](header.png)
 
 ## Instalación
-
-### OS X & Linux:
-```sh
-pip install -r requirements.txt
-```
-
-### Windows:
 ```sh
 pip install -r requirements.txt
 ```
