@@ -16,6 +16,7 @@ train_images, train_labels, class_names = load_and_preprocess_images(train_dir)
 if not os.path.exists(augmented_dir):
     os.makedirs(augmented_dir)
 
+# Instance of ImageDataGenerator for data augmentation
 train_datagen = ImageDataGenerator(
     rescale=1.0 / 255,
     rotation_range=10,
@@ -29,6 +30,7 @@ train_datagen = ImageDataGenerator(
 batch_size = 8
 num_batches = 6
 
+# Generator for augmented images
 train_generator = train_datagen.flow_from_directory(
     train_dir,
     target_size=(150, 150),
@@ -39,7 +41,7 @@ train_generator = train_datagen.flow_from_directory(
     save_format="jpg",
 )
 
-
+# Display augmented images
 for i in range(num_batches):
     images, labels = next(train_generator)
 
