@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
-from data_preprocessing import load_and_preprocess_images
+from preprocessing import load_and_preprocess_images
 
 # Paths
 base_dir = "data/raw"
