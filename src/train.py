@@ -19,11 +19,15 @@ train_gen, val_gen, test_gen = create_generators(
 )
 
 # Models
-# model = build_basic_cnn()
-# model = build_enhanced_cnn()
-model = build_vgg16()
+models = {
+    "basic_cnn": build_basic_cnn,
+    "enhanced_cnn": build_enhanced_cnn,
+    "vgg16": build_vgg16,
+    "mobilenet": build_mobilenet,
+}
+selected_model = "vgg16"
+model = models[selected_model]()
 model.summary()
-# model = build_mobilenet()
 
 # Callbacks
 callbacks = [
@@ -46,7 +50,7 @@ history = model.fit(
 )
 
 # Save the model
-model.save("models/best_model_vgg16.keras")
+model.save("models/best_model_build_vgg16.keras")
 print("Model saved!")
 
 
