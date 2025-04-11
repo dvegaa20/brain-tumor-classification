@@ -1,12 +1,12 @@
 from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
 from utils.preprocessing import get_data_info, plot_sample_images
 
-IMG_SIZE = 150
+IMG_SIZE = (150, 150)
 BATCH_SIZE = 20
 SEED = 42
 
 
-def create_generators(train_dir, test_dir):
+def create_generators(train_dir, test_dir, use_rgb):
     """
     Creates three generators for training, validation and testing using the given directories.
 
@@ -16,6 +16,8 @@ def create_generators(train_dir, test_dir):
         Path to the training directory.
     test_dir : str
         Path to the testing directory.
+    use_rgb : bool
+        Flag to determine if RGB or grayscale images should be used.
 
     Returns
     -------
@@ -26,6 +28,11 @@ def create_generators(train_dir, test_dir):
     test_generator :
         Generator for testing data.
     """
+    if use_rgb:
+        color_mode = "rgb"
+    else:
+        color_mode = "grayscale"
+
     train_datagen = ImageDataGenerator(
         rescale=1.0 / 255,
         rotation_range=10,
@@ -41,9 +48,9 @@ def create_generators(train_dir, test_dir):
 
     train_generator = train_datagen.flow_from_directory(
         train_dir,
-        target_size=(IMG_SIZE, IMG_SIZE),
+        target_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
-        color_mode="grayscale",
+        color_mode=color_mode,
         class_mode="categorical",
         subset="training",
         shuffle=True,
@@ -52,9 +59,9 @@ def create_generators(train_dir, test_dir):
 
     val_generator = train_datagen.flow_from_directory(
         train_dir,
-        target_size=(IMG_SIZE, IMG_SIZE),
+        target_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
-        color_mode="grayscale",
+        color_mode=color_mode,
         class_mode="categorical",
         subset="validation",
         shuffle=True,
@@ -63,9 +70,9 @@ def create_generators(train_dir, test_dir):
 
     test_generator = test_val_datagen.flow_from_directory(
         test_dir,
-        target_size=(IMG_SIZE, IMG_SIZE),
+        target_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
-        color_mode="grayscale",
+        color_mode=color_mode,
         class_mode="categorical",
         shuffle=False,
     )
