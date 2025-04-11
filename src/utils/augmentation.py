@@ -46,36 +46,42 @@ def create_generators(train_dir, test_dir, use_rgb):
 
     test_val_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
-    train_generator = train_datagen.flow_from_directory(
-        train_dir,
-        target_size=IMG_SIZE,
-        batch_size=BATCH_SIZE,
-        color_mode=color_mode,
-        class_mode="categorical",
-        subset="training",
-        shuffle=True,
-        seed=SEED,
-    )
+    train_generator = None
+    val_generator = None
+    test_generator = None
 
-    val_generator = train_datagen.flow_from_directory(
-        train_dir,
-        target_size=IMG_SIZE,
-        batch_size=BATCH_SIZE,
-        color_mode=color_mode,
-        class_mode="categorical",
-        subset="validation",
-        shuffle=True,
-        seed=SEED,
-    )
+    if train_dir:
+        train_generator = train_datagen.flow_from_directory(
+            train_dir,
+            target_size=IMG_SIZE,
+            batch_size=BATCH_SIZE,
+            color_mode=color_mode,
+            class_mode="categorical",
+            subset="training",
+            shuffle=True,
+            seed=SEED,
+        )
 
-    test_generator = test_val_datagen.flow_from_directory(
-        test_dir,
-        target_size=IMG_SIZE,
-        batch_size=BATCH_SIZE,
-        color_mode=color_mode,
-        class_mode="categorical",
-        shuffle=False,
-    )
+        val_generator = train_datagen.flow_from_directory(
+            train_dir,
+            target_size=IMG_SIZE,
+            batch_size=BATCH_SIZE,
+            color_mode=color_mode,
+            class_mode="categorical",
+            subset="validation",
+            shuffle=True,
+            seed=SEED,
+        )
+
+    if test_dir:
+        test_generator = test_val_datagen.flow_from_directory(
+            test_dir,
+            target_size=IMG_SIZE,
+            batch_size=BATCH_SIZE,
+            color_mode=color_mode,
+            class_mode="categorical",
+            shuffle=False,
+        )
 
     return train_generator, val_generator, test_generator
 
