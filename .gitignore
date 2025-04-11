@@ -1,6 +1,9 @@
 # Ignore the data folder
 data/
 
+# Ignore the models folder (to big)
+models/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
