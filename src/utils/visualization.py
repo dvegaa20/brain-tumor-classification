@@ -10,8 +10,8 @@ def plot_training_history(history):
     history:
         The history object returned by the model's fit method.
     """
-    acc = history.history["accuracy"]
-    val_acc = history.history["val_accuracy"]
+    acc = history.history["acc"]
+    val_acc = history.history["val_acc"]
     loss = history.history["loss"]
     val_loss = history.history["val_loss"]
 
