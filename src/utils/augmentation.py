@@ -1,5 +1,5 @@
 from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
-from preprocessing import get_data_info, plot_sample_images
+from utils.preprocessing import get_data_info, plot_sample_images
 
 IMG_SIZE = 150
 BATCH_SIZE = 20
