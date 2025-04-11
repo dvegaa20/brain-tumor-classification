@@ -12,7 +12,7 @@ from utils.visualization import plot_training_history
 EPOCHS = 10
 
 # Data Generators
-train_gen, val_gen, test_gen = create_generators(
+train_gen, val_gen, _ = create_generators(
     train_dir="data/raw/training",
     test_dir="data/raw/testing",
     use_rgb=True,
