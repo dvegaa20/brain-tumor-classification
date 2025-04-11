@@ -1,57 +1,95 @@
-import os
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
 from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
-from preprocessing import load_and_preprocess_images
+from preprocessing import get_data_info, plot_sample_images
 
-# Paths
-base_dir = "data/raw"
-augmented_dir = "data/augmented"
-train_dir = os.path.join(base_dir, "training")
+IMG_SIZE = 150
+BATCH_SIZE = 20
+SEED = 42
 
-# Load processed images
-train_images, train_labels, class_names = load_and_preprocess_images(train_dir)
 
-if not os.path.exists(augmented_dir):
-    os.makedirs(augmented_dir)
+def create_generators(train_dir, test_dir):
+    """
+    Creates three generators for training, validation and testing using the given directories.
 
-# Instance of ImageDataGenerator for data augmentation
-train_datagen = ImageDataGenerator(
-    rescale=1.0 / 255,
-    rotation_range=10,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
-    shear_range=0.3,
-    zoom_range=0.3,
-    horizontal_flip=True,
-)
+    Parameters
+    ----------
+    train_dir : str
+        Path to the training directory.
+    test_dir : str
+        Path to the testing directory.
 
-batch_size = 8
-num_batches = 6
+    Returns
+    -------
+    train_generator :
+        Generator for training data.
+    val_generator :
+        Generator for validation data.
+    test_generator :
+        Generator for testing data.
+    """
+    train_datagen = ImageDataGenerator(
+        rescale=1.0 / 255,
+        rotation_range=10,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        shear_range=0.3,
+        zoom_range=0.3,
+        horizontal_flip=True,
+        validation_split=0.2,
+    )
 
-# Generator for augmented images
-train_generator = train_datagen.flow_from_directory(
-    train_dir,
-    target_size=(150, 150),
-    batch_size=batch_size,
-    class_mode="binary",
-    save_to_dir=augmented_dir,
-    save_prefix="aug",
-    save_format="jpg",
-)
+    test_val_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
-# Display augmented images
-for i in range(num_batches):
-    images, labels = next(train_generator)
+    train_generator = train_datagen.flow_from_directory(
+        train_dir,
+        target_size=(IMG_SIZE, IMG_SIZE),
+        batch_size=BATCH_SIZE,
+        color_mode="grayscale",
+        class_mode="categorical",
+        subset="training",
+        shuffle=True,
+        seed=SEED,
+    )
 
-    plt.figure(figsize=(10, 5))
-    for j in range(len(images)):
-        plt.subplot(2, 4, j + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(images[j])
-    plt.show()
+    val_generator = train_datagen.flow_from_directory(
+        train_dir,
+        target_size=(IMG_SIZE, IMG_SIZE),
+        batch_size=BATCH_SIZE,
+        color_mode="grayscale",
+        class_mode="categorical",
+        subset="validation",
+        shuffle=True,
+        seed=SEED,
+    )
 
-print(f"\n{batch_size * num_batches} images have been augmented at: {augmented_dir}")
+    test_generator = test_val_datagen.flow_from_directory(
+        test_dir,
+        target_size=(IMG_SIZE, IMG_SIZE),
+        batch_size=BATCH_SIZE,
+        color_mode="grayscale",
+        class_mode="categorical",
+        shuffle=False,
+    )
+
+    return train_generator, val_generator, test_generator
+
+
+if __name__ == "__main__":
+    train_dir = "data/raw/training"
+    test_dir = "data/raw/testing"
+
+    # Get data information
+    class_names = get_data_info(train_dir)
+
+    # Create data generators
+    train_gen, val_gen, test_gen = create_generators(train_dir, test_dir)
+
+    # Plot sample images
+    print("")
+    print("Sample images from training generator:")
+    plot_sample_images(train_gen, class_names)
+
+    print("Sample images from validation generator:")
+    plot_sample_images(val_gen, class_names)
+
+    print("Sample images from testing generator:")
+    plot_sample_images(test_gen, class_names)
