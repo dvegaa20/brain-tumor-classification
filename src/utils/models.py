@@ -55,20 +55,6 @@ def build_vgg16(input_shape=IMG_SIZE_RGB, num_classes=4):
     return model
 
 
-# def transfer_vgg16(input_shape=(150, 150, 3), num_classes=4):
-#     base_model = VGG16(weights="imagenet", include_top=False, input_shape=input_shape)
-#     base_model.trainable = False
-#     model = models.Sequential(
-#         [
-#             base_model,
-#             layers.GlobalAveragePooling2D(),
-#             layers.Dense(128, activation="relu"),
-#             layers.Dense(num_classes, activation="sigmoid"),
-#         ]
-#     )
-#     return model
-
-
 def build_mobilenet(input_shape=IMG_SIZE_RGB, num_classes=4):
     base_model = MobileNetV2(
         input_shape=input_shape, include_top=False, weights="imagenet"
@@ -83,19 +69,3 @@ def build_mobilenet(input_shape=IMG_SIZE_RGB, num_classes=4):
     model.add(layers.Dense(num_classes, activation="sigmoid"))
 
     return model
-
-
-# def transfer_mobilenet(input_shape=(150, 150, 3), num_classes=4):
-#     base_model = MobileNetV2(
-#         input_shape=input_shape, include_top=False, weights="imagenet"
-#     )
-#     base_model.trainable = False
-#     model = models.Sequential(
-#         [
-#             base_model,
-#             layers.GlobalAveragePooling2D(),
-#             layers.Dense(128, activation="relu"),
-#             layers.Dense(num_classes, activation="sigmoid"),
-#         ]
-#     )
-#     return model
