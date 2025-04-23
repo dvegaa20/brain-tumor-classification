@@ -1,4 +1,4 @@
-import tensorflow as tf
+from keras.models import load_model
 from utils.augmentation import create_generators
 from utils.metrics import generate_classification_report, plot_confusion_matrix
 
@@ -19,7 +19,7 @@ def evaluate_model(model_path, test_dir):
     This function prints out the test loss and accuracy, a classification
     report and a confusion matrix, using the test set.
     """
-    model = tf.keras.models.load_model(model_path)
+    model = load_model(model_path)
 
     _, _, test_gen = create_generators(train_dir=None, test_dir=test_dir, use_rgb=True)
 

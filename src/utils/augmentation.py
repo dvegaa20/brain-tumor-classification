@@ -90,13 +90,10 @@ if __name__ == "__main__":
     train_dir = "data/raw/training"
     test_dir = "data/raw/testing"
 
-    # Get data information
     class_names = get_data_info(train_dir)
 
-    # Create data generators
     train_gen, val_gen, test_gen = create_generators(train_dir, test_dir)
 
-    # Plot sample images
     print("")
     print("Sample images from training generator:")
     plot_sample_images(train_gen, class_names)

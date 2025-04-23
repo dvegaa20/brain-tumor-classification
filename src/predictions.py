@@ -17,7 +17,8 @@ class_names = [
     "pituitary",
 ]
 
-def predict_one_image(model, img_path, target_size=(150, 150), grayscale=False):
+
+def predict_image(model, img_path, target_size=(150, 150), grayscale=False):
     """
     Predicts the class of one image using a given model.
 
@@ -37,7 +38,11 @@ def predict_one_image(model, img_path, target_size=(150, 150), grayscale=False):
         The predicted class of the image.
     """
 
-    img = image.load_img(img_path, target_size=target_size, color_mode='grayscale' if grayscale else 'rgb')
+    img = image.load_img(
+        img_path,
+        target_size=target_size,
+        color_mode="grayscale" if grayscale else "rgb",
+    )
     img_array = image.img_to_array(img)
     if grayscale:
         img_array = np.expand_dims(img_array, axis=-1)
@@ -47,7 +52,6 @@ def predict_one_image(model, img_path, target_size=(150, 150), grayscale=False):
     pred = model.predict(img_array)
     pred_class = np.argmax(pred, axis=1)
     return pred_class[0]
-
 
 
 def open_images():
@@ -83,21 +87,20 @@ def open_images():
         total_width = (len(img_paths) - 1) * overlap + image_size
         x_offset = max((500 - total_width) // 2, 0)
 
-
-
         for idx, img_path in enumerate(img_paths, start=1):
             img = make_circle(Image.open(img_path).resize((150, 150)))
             img_tk = ImageTk.PhotoImage(img)
             image_refs.append(img_tk)
-            canvas.create_image(x_offset, 10, anchor='nw', image=img_tk)
-            x_offset += overlap 
+            canvas.create_image(x_offset, 10, anchor="nw", image=img_tk)
+            x_offset += overlap
 
-            pred_class1 = predict_one_image(model1, img_path, grayscale=False)
-            pred_class2 = predict_one_image(model2, img_path, grayscale=False)
+            pred_class1 = predict_image(model1, img_path, grayscale=False)
+            pred_class2 = predict_image(model2, img_path, grayscale=False)
             results_text += f"Image {idx}: {img_path.split('/')[-1]}\n"
-            results_text += f"Basic Prediction: {class_names[pred_class1]}, Enhanced Prediction: {class_names[pred_class2]}\n\n"
+            results_text += f"VGG16 Prediction: {class_names[pred_class1]}, Mobilenet Prediction: {class_names[pred_class2]}\n\n"
 
         result_label.config(text=results_text)
+
 
 def make_circle(img, size=(120, 120)):
     """
@@ -115,7 +118,7 @@ def make_circle(img, size=(120, 120)):
     PIL.Image
         Image with circular alpha mask.
     """
-    
+
     img = img.resize(size)
     draw = Image.new("L", size, 0)
     for y in range(size[1]):
@@ -126,31 +129,38 @@ def make_circle(img, size=(120, 120)):
     return img
 
 
+# List for image references
+image_refs = []
+
+# Create the GUI
 root = tk.Tk()
 root.title("🧠 Brain MRI Classifier")
 root.geometry("600x550")
 
+# Font settings
 TITLE_FONT = ("Helvetica", 24, "bold")
 TEXT_FONT = ("Helvetica", 14)
 BUTTON_FONT = ("Helvetica", 14, "bold")
 
+# Title label
 title_label = tk.Label(root, text="Brain MRI Classifier", font=TITLE_FONT)
 title_label.pack(pady=(80, 0))
 
+# Canvas
 canvas = tk.Canvas(root, width=500, height=140, highlightthickness=0)
 canvas.pack(pady=20)
 
-image_refs = []
 
 result_label = Label(
     root,
     text="Select images to get predictions",
     font=TEXT_FONT,
     wraplength=500,
-    justify="left"
+    justify="left",
 )
 result_label.pack(pady=10)
 
+# Button to open file dialog
 button = tk.Button(root, text="Select Images", font=BUTTON_FONT, command=open_images)
 button.pack(pady=10)
 
