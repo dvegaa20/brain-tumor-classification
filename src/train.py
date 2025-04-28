@@ -6,10 +6,10 @@ from utils.models import (
     build_vgg16,
     build_mobilenet,
 )
-from keras.callbacks import EarlyStopping
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from utils.visualization import plot_training_history
 
-EPOCHS = 10
+EPOCHS = 50
 
 # Data Generators
 train_gen, val_gen, _ = create_generators(
@@ -25,19 +25,22 @@ models = {
     "vgg16": build_vgg16,
     "mobilenet": build_mobilenet,
 }
-selected_model = "vgg16"
+selected_model = "mobilenet"
 model = models[selected_model]()
 model.summary()
 
 # Callbacks
 callbacks = [
-    EarlyStopping(monitor="val_acc", mode="max", patience=5, restore_best_weights=True),
+    EarlyStopping(
+        monitor="val_loss", mode="min", patience=5, restore_best_weights=True
+    ),
+    ReduceLROnPlateau(monitor="val_loss", factor=0.3, patience=3, verbose=1),
 ]
 
 # Compile the model
 model.compile(
-    loss="binary_crossentropy",
-    optimizer=optimizers.RMSprop(learning_rate=2e-5),
+    loss="categorical_crossentropy",
+    optimizer=optimizers.Adam(learning_rate=1e-5),
     metrics=["acc"],
 )
 
@@ -50,7 +53,7 @@ history = model.fit(
 )
 
 # Save the model
-model.save("models/best_model_build_vgg16.keras")
+model.save("models/best_model_mobilenet.keras")
 print("Model saved!")
 
 
