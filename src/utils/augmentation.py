@@ -2,7 +2,7 @@ from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
 from utils.preprocessing import get_data_info, plot_sample_images
 
 IMG_SIZE = (150, 150)
-BATCH_SIZE = 20
+BATCH_SIZE = 32
 SEED = 42
 
 
