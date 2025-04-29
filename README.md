@@ -1,6 +1,6 @@
 # 📑 Brain Tumor Classification System
 
-[![Python 3.10.17](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![Python 3.10.17](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
 [![TensorFlow 2.12](https://img.shields.io/badge/TensorFlow-2.12-orange.svg)](https://www.tensorflow.org/)
 [![IEEE Format](https://img.shields.io/badge/Format-IEEE-blueviolet.svg)](https://ieeeauthorcenter.ieee.org/)
 
